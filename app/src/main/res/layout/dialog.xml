@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="#FEFEFF"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_marginTop="20dp"
+              android:layout_height="wrap_content"
+              android:text="舍弃更改"
+              android:textColor="#000000"
+              android:layout_centerHorizontal="true"
+              android:textSize="16dp"
+              />
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="60dp"
+              android:text="要舍弃对来电信息的修改吗？"
+              android:layout_marginLeft="30dp"
+              android:textSize="15dp"
+              android:textColor="#4A4A4A"
+              />
+
+    <View android:layout_width="match_parent"
+           android:layout_height="0.5dp"
+           android:background="#B8C1C5"
+           android:layout_marginTop="115dp"/>
+    <View android:layout_width="0.5dp"
+          android:layout_height="45dp"
+          android:background="#B8C1C5"
+          android:layout_marginLeft="165.5dp"
+          android:layout_marginTop="115dp"/>
+    <TextView android:layout_width="165.5dp"
+              android:layout_height="40dp"
+              android:id="@+id/dialog_cancel"
+              android:text="取 消"
+              android:gravity="center"
+              android:layout_alignParentBottom="true"
+              android:textColor="#424242"
+              android:textSize="15dp"/>
+
+    <TextView android:layout_width="165.5dp"
+              android:layout_height="40dp"
+              android:id="@+id/dialog_confirm"
+              android:text="舍弃更改"
+              android:gravity="center"
+              android:layout_alignParentBottom="true"
+              android:layout_alignParentRight="true"
+              android:textColor="#43C3FC"
+              android:textSize="15dp"/>
+
+</RelativeLayout>

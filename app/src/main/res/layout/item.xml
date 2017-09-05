@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <View android:layout_width="match_parent"
+          android:layout_height="0.5dp"
+          android:layout_marginLeft="10dp"
+          android:layout_marginRight="2dp"
+          android:background="#B8C1C5"
+          android:layout_alignParentBottom="true"/>
+    <View
+            android:id="@+id/item_line"
+            android:layout_toRightOf="@+id/item_time"
+            android:layout_marginLeft="10dp"
+            android:layout_centerInParent="true"
+            android:background="#B8C1C5"
+            android:layout_width="0.5dp"
+            android:layout_height="36dp"/>
+    <TextView
+            android:id="@+id/item_time"
+            android:layout_width="90dp"
+            android:textColor="#333333"
+            android:layout_centerVertical="true"
+            android:textSize="22dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"/>
+    <TextView
+            android:layout_toRightOf="@+id/item_line"
+            android:id="@+id/item_remaining_time"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:textColor="#6E6E6E"
+            android:textSize="12dp"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"/>
+    <android.support.v7.widget.SwitchCompat
+            android:background="#fff"
+            android:id="@+id/item_switch"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:track="@drawable/shxy_switch_bk"
+            android:thumb="@drawable/shxy_switch_selector"
+            app:showText="false"
+            android:checked="true"
+            android:layout_below="@+id/item_remaining_time" android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="15dp"
+    />
+</RelativeLayout>

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#FEFEFF">
+    <RelativeLayout
+            android:id="@+id/top_bar"
+            android:background="#43C3FC"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:fitsSystemWindows="true">
+        <TextView
+                android:id="@+id/cancel_button"
+                android:background="@drawable/text_border"
+                android:layout_marginTop="13dp"
+                android:layout_alignParentLeft="true"
+                android:text="取消"
+                android:textSize="14dp"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/text_bar"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:padding="2dp"
+                android:text="添加来电"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        <TextView
+                android:id="@+id/confirm_button"
+                android:background="@drawable/text_confirm_border"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="13dp"
+                android:text="确定"
+                android:textSize="14dp"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_width="wrap_content"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView android:layout_width="wrap_content"
+                                        android:id="@+id/repeat_button"
+                                        app:cardElevation="0dp"
+                                        android:foreground="?attr/selectableItemBackground"
+                                        android:clickable="true"
+                                        android:layout_height="wrap_content">
+        <RelativeLayout android:layout_width="wrap_content"
+
+                        android:background="#FEFEFE"
+                        android:layout_height="wrap_content">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="20dp"
+                      android:layout_marginLeft="25dp"
+                      android:textColor="#000000"
+                      android:textSize="16dp"
+                      android:typeface="normal"
+                      android:text="重复"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/repeat_text"
+                      android:text="每天"
+                      android:textColor="#B8C1C5"
+                      android:textSize="13dp"
+                      android:layout_marginTop="44dp"
+                      android:layout_marginLeft="25dp"/>
+
+            <ImageView android:layout_width="20dp"
+                       android:layout_height="20dp"
+                       android:background="@drawable/ic_chevron_right_black_24dp"
+                       android:layout_marginTop="30dp"
+                       android:layout_alignParentRight="true"
+                       android:layout_marginRight="30dp"/>
+            <View android:layout_width="match_parent"
+                  android:layout_height="0.5dp"
+                  android:layout_marginLeft="25dp"
+                  android:layout_marginRight="2dp"
+                  android:layout_marginTop="70dp"
+                  android:background="#B8C1C5"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView android:layout_width="wrap_content"
+                                        android:id="@+id/scheme_button"
+                                        app:cardElevation="0dp"
+                                        android:foreground="?attr/selectableItemBackground"
+                                        android:clickable="true"
+                                        android:layout_height="wrap_content">
+    <RelativeLayout android:layout_width="wrap_content"
+
+                    android:background="#FEFEFE"
+                    android:layout_height="wrap_content">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
+                  android:layout_marginLeft="25dp"
+                  android:textColor="#000000"
+                  android:textSize="16dp"
+                  android:typeface="normal"
+                  android:text="对话模式"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/scheme_text"
+                  android:text="自定义对话"
+                  android:textColor="#B8C1C5"
+                  android:textSize="13dp"
+                  android:layout_marginTop="44dp"
+                  android:layout_marginLeft="25dp"/>
+
+        <ImageView android:layout_width="20dp"
+                   android:layout_height="20dp"
+                   android:background="@drawable/ic_chevron_right_black_24dp"
+                   android:layout_marginTop="30dp"
+                   android:layout_alignParentRight="true"
+                   android:layout_marginRight="30dp"/>
+        <View android:layout_width="match_parent"
+              android:layout_height="0.5dp"
+              android:layout_marginLeft="25dp"
+              android:layout_marginRight="2dp"
+              android:layout_marginTop="70dp"
+              android:background="#B8C1C5"/>
+    </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView android:layout_width="wrap_content"
+                                        android:id="@+id/voice_button"
+                                        app:cardElevation="0dp"
+                                        android:foreground="?attr/selectableItemBackground"
+                                        android:clickable="true"
+                                        android:layout_height="wrap_content">
+        <RelativeLayout android:layout_width="wrap_content"
+
+                        android:background="#FEFEFE"
+                        android:layout_height="wrap_content">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="20dp"
+                      android:layout_marginLeft="25dp"
+                      android:textColor="#000000"
+                      android:textSize="16dp"
+                      android:typeface="normal"
+                      android:text="声音"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/void_text"
+                      android:text="男声"
+                      android:textColor="#B8C1C5"
+                      android:textSize="13dp"
+                      android:layout_marginTop="44dp"
+                      android:layout_marginLeft="25dp"/>
+
+            <ImageView android:layout_width="20dp"
+                       android:layout_height="20dp"
+                       android:background="@drawable/ic_chevron_right_black_24dp"
+                       android:layout_marginTop="30dp"
+                       android:layout_alignParentRight="true"
+                       android:layout_marginRight="30dp"/>
+            <View android:layout_width="match_parent"
+                  android:layout_height="0.5dp"
+                  android:layout_marginLeft="25dp"
+                  android:layout_marginRight="2dp"
+                  android:layout_marginTop="70dp"
+                  android:background="#B8C1C5"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView android:layout_width="wrap_content"
+                                        app:cardElevation="0dp"
+                                        android:foreground="?attr/selectableItemBackground"
+                                        android:clickable="true"
+                                        android:layout_height="wrap_content">
+
+    <RelativeLayout android:layout_width="wrap_content"
+                    android:background="#FEFEFE"
+                    android:layout_height="wrap_content">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
+                  android:layout_marginLeft="25dp"
+                  android:textColor="#000000"
+                  android:textSize="16dp"
+                  android:typeface="normal"
+                  android:text="响铃后删除此来电"/>
+        <android.support.v7.widget.SwitchCompat
+                android:layout_marginTop="45dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="35dp"
+                android:background="#FEFEFE"
+                android:id="@+id/del_switch"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:track="@drawable/shxy_switch_bk"
+                android:thumb="@drawable/shxy_switch_selector"
+                app:showText="false"
+                android:checked="true"/>
+        <View android:layout_width="match_parent"
+              android:layout_height="0.5dp"
+              android:layout_marginLeft="25dp"
+              android:layout_marginRight="2dp"
+              android:layout_marginTop="60dp"
+
+              android:background="#B8C1C5"/>
+    </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <RelativeLayout android:layout_width="wrap_content"
+                        android:background="#FEFEFE"
+                        android:layout_height="wrap_content">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="20dp"
+                      android:layout_marginLeft="25dp"
+                      android:textColor="#000000"
+                      android:textSize="16dp"
+                      android:typeface="normal"
+                      android:text="来电联系人"/>
+            <EditText android:layout_width="match_parent" android:layout_height="30dp"
+                      android:id="@+id/caller"
+                      android:hint="输入联系人姓名"
+                      android:textSize="16dp"
+                      android:background="@null"
+                      android:layout_marginTop="16dp"
+                      android:layout_marginLeft="120dp"/>
+            <View android:layout_width="0.5dp" android:layout_height="30dp"
+                  android:layout_marginLeft="110dp"
+                  android:background="#B8C1C5"
+                  android:layout_marginTop="15dp"/>
+            <View android:layout_width="match_parent"
+                  android:layout_height="0.5dp"
+                  android:layout_marginLeft="25dp"
+                  android:layout_marginRight="2dp"
+                  android:layout_marginTop="60dp"
+
+                  android:background="#B8C1C5"/>
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FEFEFE" >
+
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/add_phone_hint_text"
+                  android:layout_marginTop="55dp"
+                  android:layout_centerHorizontal="true"
+                  android:gravity="center"
+                  android:typeface="normal"
+                  android:textSize="16dp"
+                  android:text="将在0天0小时0分后来电"
+                  android:textColor="#B8C1C5"/>
+
+        <View android:layout_width="match_parent"
+              android:id="@+id/temp_line"
+              android:layout_height="0.5dp"
+              android:layout_marginTop="89dp"
+              android:background="#B8C1C5"/>
+        <View android:layout_width="0.5dp"
+              android:id="@+id/temp_line_1"
+              android:layout_height="200dp"
+              android:layout_marginTop="89dp"
+              android:layout_centerHorizontal="true"
+              android:background="#B8C1C5"/>
+
+        <com.ljn.callingsimulation.PickerView
+                android:id="@+id/hour_pv"
+                android:layout_marginTop="110dp"
+                android:layout_width="80dp"
+                android:layout_marginLeft="60dp"
+                android:layout_height="160dp"/>
+
+        <TextView
+                android:id="@+id/hour_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="时"
+                android:typeface="normal"
+                android:layout_toRightOf="@id/hour_pv"
+                android:layout_marginTop="160dp"
+                android:textColor="#ffaa33"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        <com.ljn.callingsimulation.PickerView
+                android:id="@+id/minute_pv"
+                android:layout_marginTop="110dp"
+                android:layout_width="80dp"
+                android:layout_height="160dp"
+                android:layout_marginLeft="100dp"
+                android:layout_toRightOf="@id/hour_pv" />
+
+        <TextView
+                android:id="@+id/minute_tv"
+                android:layout_width="wrap_content"
+                android:layout_toRightOf="@id/minute_pv"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="160dp"
+                android:text="分"
+                android:typeface="normal"
+                android:textColor="#ffaa33"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+    </RelativeLayout>
+
+</LinearLayout>
+
+
+
