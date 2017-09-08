@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 System.out.println("del");
                 AlertDialog.Builder delDialog = new AlertDialog.Builder(MainActivity.this);
-                delDialog.setPositiveButton("删除来电", new DialogInterface.OnClickListener() {
+                delDialog.setNeutralButton("删除来电", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
