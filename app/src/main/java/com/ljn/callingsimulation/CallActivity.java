@@ -84,7 +84,7 @@ public class CallActivity extends AppCompatActivity{
             case MotionEvent.ACTION_UP:
                 if (Top == mTop) {
                     if (!end) {
-                        Intent intent = new Intent(CallActivity.this, Main2Activity.class);
+                        Intent intent = new Intent(CallActivity.this, CalledActivity.class);
                         intent.putExtra("name",name);
                         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
                                 CallActivity.this, call, "startAnim").toBundle());

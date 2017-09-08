@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
+public class CalledActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView call_time;
     boolean RUN_STATE = true;

@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                MainActivity.this.startActivity(new Intent(MainActivity.this,CallingAdder.class));
+                MainActivity.this.startActivity(new Intent(MainActivity.this,CallingAdderActivity.class));
             }
         });
         settingButton.setOnClickListener(new View.OnClickListener() {

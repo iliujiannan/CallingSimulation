@@ -21,12 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.ljn.callingsimulation.CallingAdder">
+        <activity android:name="com.ljn.callingsimulation.CallingAdderActivity">
         </activity>
         <service android:name=".CallingService">
         </service>
         <activity android:name=".CallActivity"/>
-        <activity android:name=".Main2Activity"/>
+        <activity android:name=".CalledActivity"/>
     </application>
 
 </manifest>

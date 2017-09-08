@@ -5,22 +5,17 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
-import android.text.Layout;
 import android.view.*;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.ljn.callingsimulation.R;
 import com.ljn.callingsimulation.util.DateUtil;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +23,7 @@ import java.util.List;
 /**
  * Created by 12390 on 2017/8/30.
  */
-public class CallingAdder extends AppCompatActivity {
+public class CallingAdderActivity extends AppCompatActivity {
 
     private TextView cancelButton;
     private TextView confirmButton;
@@ -162,7 +157,7 @@ public class CallingAdder extends AppCompatActivity {
                 sqLiteOpenHelperUtil.doInsert(values);
                 //sqLiteOpenHelperUtil.doInsert(new String[]{"","ljn", "1", "", "2017-09-05 17:00:00", "1", "1","1", "1","1"});
                 finish();
-                CallingAdder.this.startActivity(new Intent(CallingAdder.this, MainActivity.class));
+                CallingAdderActivity.this.startActivity(new Intent(CallingAdderActivity.this, MainActivity.class));
             }
         });
     }
@@ -209,7 +204,7 @@ public class CallingAdder extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                CallingAdder.this.startActivity(new Intent(CallingAdder.this, MainActivity.class));
+                CallingAdderActivity.this.startActivity(new Intent(CallingAdderActivity.this, MainActivity.class));
             }
         });
 
@@ -219,7 +214,7 @@ public class CallingAdder extends AppCompatActivity {
         final String[] items = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
-        AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdder.this);
+        AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdderActivity.this);
         listDialog.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -243,7 +238,7 @@ public class CallingAdder extends AppCompatActivity {
         final String[] items = {"自定义对话", "智能对话"};
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
-        AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdder.this);
+        AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdderActivity.this);
         listDialog.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -266,7 +261,7 @@ public class CallingAdder extends AppCompatActivity {
         final String[] items = {"男声", "女声"};
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
-        AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdder.this);
+        AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdderActivity.this);
         listDialog.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -321,6 +316,6 @@ public class CallingAdder extends AppCompatActivity {
     }
 
     public void initDB() {
-        sqLiteOpenHelperUtil = new SQLiteOpenHelperUtil(CallingAdder.this);
+        sqLiteOpenHelperUtil = new SQLiteOpenHelperUtil(CallingAdderActivity.this);
     }
 }
