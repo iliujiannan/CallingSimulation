@@ -1,7 +1,13 @@
 package com.ljn.callingsimulation;
 
 import android.app.ActivityOptions;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +24,7 @@ public class CallActivity extends AppCompatActivity{
     ImageView call_im;
     int mTop, mBottom;
     String name;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +35,29 @@ public class CallActivity extends AppCompatActivity{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.call);
 
+        getWindow().addFlags(
+                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
+                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         FinishListActivity.getInstance().addActivity(this);
 
         name = getIntent().getStringExtra("name");
         ((TextView)findViewById(R.id.name)).setText(name);
-
         initView();
-
         onAnim();
+        startMusic();
+
+    }
+
+    private void startMusic(){
+        mediaPlayer = MediaPlayer.create(this,getSystemDefultRingtoneUri());
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.stop();
     }
 
     int lastY;
@@ -86,6 +108,7 @@ public class CallActivity extends AppCompatActivity{
                     if (!end) {
                         Intent intent = new Intent(CallActivity.this, CalledActivity.class);
                         intent.putExtra("name",name);
+                        finish();
                         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
                                 CallActivity.this, call, "startAnim").toBundle());
                     } else {
@@ -104,5 +127,9 @@ public class CallActivity extends AppCompatActivity{
 //        call_im = (ImageView) findViewById(R.id.call_im);
         mTop = 0;
         mBottom = 0;
+    }
+    private Uri getSystemDefultRingtoneUri() {
+        return RingtoneManager.getActualDefaultRingtoneUri(this,
+                RingtoneManager.TYPE_RINGTONE);
     }
 }

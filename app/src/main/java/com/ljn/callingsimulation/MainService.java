@@ -1,24 +1,18 @@
 package com.ljn.callingsimulation;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
-import android.widget.ListView;
-import android.widget.TextView;
 import com.ljn.callingsimulation.bean.Calling;
 import com.ljn.callingsimulation.util.DateUtil;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
 
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.Vector;
 
 /**
  * Created by 12390 on 2017/9/5.
  */
-public class CallingService extends Service {
+public class MainService extends Service {
 
     private SQLiteOpenHelperUtil dbHelper;
     private Intent intent = new Intent("com.ljn.callingsimulation.RECEIVER");
@@ -29,7 +23,7 @@ public class CallingService extends Service {
 
     @Override
     public void onCreate() {
-        dbHelper = new SQLiteOpenHelperUtil(CallingService.this);
+        dbHelper = new SQLiteOpenHelperUtil(MainService.this);
         System.out.println("ttt");
         new Thread(){
             @Override
@@ -44,9 +38,12 @@ public class CallingService extends Service {
                             if (DateUtil.compareDate(DateUtil.dateToString(new Date()), calling.getStartTime()) != -1) {
 //                                intent.putExtra("id", calling.getCallingId());
 //                                sendBroadcast(intent);
-                                MainActivity.callings.remove(calling);
-                                Intent intent = new Intent(CallingService.this,CallActivity.class);
+
+                                Intent intent = new Intent(MainService.this,CallActivity.class);
                                 intent.putExtra("name",calling.getCaller());
+                                MainActivity.callings.remove(calling);
+                                String[] values = {String.valueOf(calling.getCallingId())};
+                                dbHelper.doDelete("calling_id=?", values);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
                                 break;

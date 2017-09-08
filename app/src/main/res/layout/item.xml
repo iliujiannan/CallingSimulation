@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"/>
     <android.support.v7.widget.SwitchCompat
             android:background="#fff"
+            android:focusable="false"
             android:id="@+id/item_switch"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"

@@ -1,11 +1,10 @@
 package com.ljn.callingsimulation;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -29,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteOpenHelperUtil dbHelper;
     private MyAdapter myAdapter;
     public static Vector<Calling> callings;
-    private MsgReceiver msgReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +38,8 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         FinishListActivity.getInstance().addActivity(this);
 
-        try {
-            msgReceiver = new MsgReceiver();
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("com.ljn.callingsimulation.RECEIVER");
-            registerReceiver(msgReceiver, intentFilter);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
         setContentView(R.layout.activity_main);
-        startService(new Intent(this,CallingService.class));
+        startService(new Intent(this,MainService.class));
         initDB();
         initComponent();
 
@@ -59,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(msgReceiver);
         super.onDestroy();
     }
 
@@ -81,15 +68,22 @@ public class MainActivity extends AppCompatActivity {
         });
         myAdapter = new MyAdapter(this);
         callingList.setAdapter(myAdapter);
-        callingList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        callingList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                System.out.println("del");
+                AlertDialog.Builder delDialog = new AlertDialog.Builder(MainActivity.this);
+                delDialog.setPositiveButton("删除来电", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+                        String[] values = {String.valueOf(MainActivity.callings.get(position).getCallingId())};
+                        MainActivity.callings.remove(position);
+                        dbHelper.doDelete("calling_id=?", values);
+                        myAdapter.notifyDataSetChanged();
+                    }
+                }).show();
+                return true;
             }
         });
 
@@ -151,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder = null;
             if(convertView == null){
 
@@ -181,7 +175,14 @@ public class MainActivity extends AppCompatActivity {
             viewHolder.mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                    if(isChecked){
+                        MainActivity.callings.get(position).setIsOpen("1");
+                    }else{
+                        MainActivity.callings.get(position).setIsOpen("0");
+                    }
+                    String[] values = new String[]{"","","","","","","","",MainActivity.callings.get(position).getIsOpen(),""};
+                    String[] selectionValues = {String.valueOf(MainActivity.callings.get(position).getCallingId())};
+                    dbHelper.doUpdate(values,"calling_id=?",selectionValues);
                 }
             });
             return convertView;
