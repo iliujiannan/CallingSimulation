@@ -47,9 +47,9 @@ public class CallingAdder extends AppCompatActivity {
     private TextView schemeText;
     private EditText caller;
     private String del = "1";
-    private Boolean isChanged = false;
-    private Boolean addEnabled = true;
+    private Boolean addEnable = true;
     private Boolean subEnable = true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +62,8 @@ public class CallingAdder extends AppCompatActivity {
         initComponent();
         setInitValues();
     }
-    private void initComponent(){
+
+    private void initComponent() {
 
         //获取所有控件
         this.minute_pv = (PickerView) findViewById(R.id.minute_pv);
@@ -81,12 +82,10 @@ public class CallingAdder extends AppCompatActivity {
         //设置TimePicker 初始参数
         List<String> data = new ArrayList<String>();
         List<String> seconds = new ArrayList<String>();
-        for (int i = 0; i < 24; i++)
-        {
+        for (int i = 0; i < 24; i++) {
             data.add(i < 10 ? "0" + i : "" + i);
         }
-        for (int i = 0; i < 60; i++)
-        {
+        for (int i = 0; i < 60; i++) {
             seconds.add(i < 10 ? "0" + i : "" + i);
         }
         hour_pv.setData(data);
@@ -109,39 +108,17 @@ public class CallingAdder extends AppCompatActivity {
         hour_pv.setOnSelectListener(new PickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
-
-                int temp = 0;
-                if(!isChanged) {
-                    if (Integer.valueOf(text) < Integer.valueOf(DateUtil.dateToString(new Date(), "HH")) && addEnabled) {
-                        temp = 1;
-                    } else {
-                        if (Integer.valueOf(text) > Integer.valueOf(DateUtil.dateToString(new Date(), "HH")) && subEnable) {
-                            temp = -1;
-                        } else {
-                            if (Integer.valueOf(minute) < Integer.valueOf(DateUtil.dateToString(new Date(), "mm")) && addEnabled) {
-                                temp = 1;
-                            } else {
-                                if (Integer.valueOf(minute) > Integer.valueOf(DateUtil.dateToString(new Date(), "mm")) && subEnable) {
-                                    temp = -1;
-                                }
-                            }
-                        }
-                    }
-                }
-                addEnabled = !addEnabled;
-                subEnable = !subEnable;
-                String strNowDay = DateUtil.dateToString(new Date(), "yyyy-MM-dd");
-                Date preDay = new Date(DateUtil.stringToDate(strNowDay + " 00:00:00").getTime() + temp * 24 * 60 * 60 * 1000);
-                repeatText.setText(DateUtil.getWeekOfDate(preDay));
                 hour = text;
-                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()),caculate()));
+                caculateTimePicker();
+                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()), caculate()));
             }
         });
         minute_pv.setOnSelectListener(new PickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
                 minute = text;
-                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()),caculate()));
+                caculateTimePicker();
+                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()), caculate()));
             }
         });
 
@@ -155,9 +132,9 @@ public class CallingAdder extends AppCompatActivity {
         this.delSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     del = "1";
-                }else{
+                } else {
                     del = "0";
                 }
             }
@@ -185,18 +162,37 @@ public class CallingAdder extends AppCompatActivity {
                 sqLiteOpenHelperUtil.doInsert(values);
                 //sqLiteOpenHelperUtil.doInsert(new String[]{"","ljn", "1", "", "2017-09-05 17:00:00", "1", "1","1", "1","1"});
                 finish();
-                CallingAdder.this.startActivity(new Intent(CallingAdder.this,MainActivity.class));
+                CallingAdder.this.startActivity(new Intent(CallingAdder.this, MainActivity.class));
             }
         });
     }
-    private void showDialog(){
+
+    private void caculateTimePicker(){
+        String chooseTime = caculate();
+        String nowDate = DateUtil.dateToString(new Date());
+        int res = DateUtil.compareDate(chooseTime, nowDate);
+        if(res==-1&&addEnable){
+            Date nextDate = new Date(DateUtil.stringToDate(chooseTime).getTime() + 24*60*60*1000);
+            repeatText.setText(DateUtil.getWeekOfDate(nextDate));
+            addEnable = false;
+        }
+        Integer nowHour = Integer.valueOf(DateUtil.dateToString(new Date(), "HH"));
+        Integer nowMinute = Integer.valueOf(DateUtil.dateToString(new Date(), "mm"));
+        if(res==1&&(Integer.valueOf(hour)> nowHour||(Integer.valueOf(hour)==nowHour && Integer.valueOf(minute)>nowMinute)))
+        {
+            repeatText.setText(DateUtil.getWeekOfDate(DateUtil.stringToDate(nowDate)));
+            addEnable = true;
+        }
+    }
+
+    private void showDialog() {
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
         final Dialog dialog1 = new Dialog(this);
         dialog1.setContentView(R.layout.dialog);
         Window window = dialog1.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
-        window.setGravity(Gravity.CENTER_VERTICAL|Gravity.BOTTOM);
+        window.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM);
         lp.height = (int) (d.getHeight() * 0.3);
         lp.width = (int) getResources().getDisplayMetrics().widthPixels;
         window.setAttributes(lp);
@@ -213,13 +209,14 @@ public class CallingAdder extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                CallingAdder.this.startActivity(new Intent(CallingAdder.this,MainActivity.class));
+                CallingAdder.this.startActivity(new Intent(CallingAdder.this, MainActivity.class));
             }
         });
 
     }
-    private void showRepeatDialog(){
-        final String[] items = { "星期一","星期二","星期三","星期四","星期五","星期六","星期日"};
+
+    private void showRepeatDialog() {
+        final String[] items = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
         AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdder.this);
@@ -227,25 +224,23 @@ public class CallingAdder extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 repeatText.setText(items[which]);
-                if(!repeatText.getText().toString().equals(DateUtil.getWeekOfDate(new Date()))){
-                    isChanged = true;
-                }
-                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()),caculate()));
+                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()), caculate()));
             }
 
         });
         AlertDialog alertDialog = listDialog.create();
         Window window = alertDialog.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
-        window.setGravity(Gravity.CENTER_VERTICAL|Gravity.BOTTOM);
+        window.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM);
         lp.height = (int) (d.getHeight() * 0.3);
         lp.width = (int) getResources().getDisplayMetrics().widthPixels;
         window.setAttributes(lp);
 
         alertDialog.show();
     }
-    private void showSchemeDialog(){
-        final String[] items = { "自定义对话","智能对话"};
+
+    private void showSchemeDialog() {
+        final String[] items = {"自定义对话", "智能对话"};
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
         AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdder.this);
@@ -259,15 +254,16 @@ public class CallingAdder extends AppCompatActivity {
         AlertDialog alertDialog = listDialog.create();
         Window window = alertDialog.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
-        window.setGravity(Gravity.CENTER_VERTICAL|Gravity.BOTTOM);
+        window.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM);
         lp.height = (int) (d.getHeight() * 0.3);
         lp.width = (int) getResources().getDisplayMetrics().widthPixels;
         window.setAttributes(lp);
 
         alertDialog.show();
     }
-    private void showVoiceDialog(){
-        final String[] items = { "男声","女声"};
+
+    private void showVoiceDialog() {
+        final String[] items = {"男声", "女声"};
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
         AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdder.this);
@@ -281,22 +277,23 @@ public class CallingAdder extends AppCompatActivity {
         AlertDialog alertDialog = listDialog.create();
         Window window = alertDialog.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
-        window.setGravity(Gravity.CENTER_VERTICAL|Gravity.BOTTOM);
+        window.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM);
         lp.height = (int) (d.getHeight() * 0.3);
         lp.width = (int) getResources().getDisplayMetrics().widthPixels;
         window.setAttributes(lp);
 
         alertDialog.show();
     }
-    private String caculate(){
+
+    private String caculate() {
         //通过repeat hour minute 计算响铃的yyyy-MM-dd HH：mm：ss
         Integer day = DateUtil.getIndOfDay(repeatText.getText().toString());
         Integer nowDay = DateUtil.getIndOfDay(DateUtil.getWeekOfDate(new Date()));
         Integer c = 0;
-        if(day!=-1&&nowDay!=-1){
-            if(day>=nowDay){
-                c = day-nowDay;
-            }else{
+        if (day != -1 && nowDay != -1) {
+            if (day >= nowDay) {
+                c = day - nowDay;
+            } else {
                 c = 7 + nowDay - day;
             }
         }
@@ -306,14 +303,14 @@ public class CallingAdder extends AppCompatActivity {
         String targetStringDate = DateUtil.dateToString(targetDate);
         return targetStringDate;
     }
-    private void setInitValues(){
+
+    private void setInitValues() {
         //初始化hintText,TimePicker, repeatText
         this.repeatText.setText(DateUtil.getWeekOfDate(DateUtil.stringToDate(DateUtil.getNextTHTime())));
         this.hintText.setText("将在1小时59分后来电");
         String dateTime = DateUtil.getNextTHTime();
-        System.out.println(dateTime);
-        Integer hour = Integer.valueOf(dateTime.substring(11,13));
-        Integer minute = Integer.valueOf(dateTime.substring(14,16));
+        Integer hour = Integer.valueOf(dateTime.substring(11, 13));
+        Integer minute = Integer.valueOf(dateTime.substring(14, 16));
         this.hour_pv.setSelected(hour);
         this.minute_pv.setSelected(minute);
         this.hour = hour.toString();
@@ -322,7 +319,8 @@ public class CallingAdder extends AppCompatActivity {
         this.voiceText.setText("男声");
 
     }
-    private void initDB(){
+
+    public void initDB() {
         sqLiteOpenHelperUtil = new SQLiteOpenHelperUtil(CallingAdder.this);
     }
 }

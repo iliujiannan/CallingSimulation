@@ -9,6 +9,7 @@ import android.util.Log;
 import com.ljn.callingsimulation.bean.Calling;
 
 import java.util.LinkedList;
+import java.util.Vector;
 
 import static android.content.ContentValues.TAG;
 
@@ -46,9 +47,9 @@ public class SQLiteOpenHelperUtil extends SQLiteOpenHelper {
 
     }
 
-    public LinkedList<Calling> doQuery(String selection, String[] selectionArgs){
+    public Vector<Calling> doQuery(String selection, String[] selectionArgs){
         SQLiteDatabase db = this.getReadableDatabase();
-        LinkedList<Calling> callings = new LinkedList<Calling>();
+        Vector<Calling> callings = new Vector<Calling>();
         Cursor cursor = db.query(table_name, args,selection,selectionArgs,null,null,"calling_id");
         while(cursor.moveToNext()){
             Calling calling = new Calling();
