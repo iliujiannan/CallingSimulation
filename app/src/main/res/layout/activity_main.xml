@@ -13,7 +13,7 @@
             app:backgroundTint="#43C3FC"
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_android_black_24dp"
+            android:src="@drawable/add_button"
             android:clickable="true"
             android:id="@+id/b_add_phone"
     />
