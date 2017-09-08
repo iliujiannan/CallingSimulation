@@ -45,7 +45,10 @@ public class CallingService extends Service {
 //                                intent.putExtra("id", calling.getCallingId());
 //                                sendBroadcast(intent);
                                 MainActivity.callings.remove(calling);
-                                startActivity(new Intent(CallingService.this,CallActivity.class).putExtra("name",calling.getCaller()));
+                                Intent intent = new Intent(CallingService.this,CallActivity.class);
+                                intent.putExtra("name",calling.getCaller());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
                                 break;
                             }
                         }
