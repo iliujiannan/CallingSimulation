@@ -25,6 +25,9 @@ import java.util.List;
  */
 public class CallingAdderActivity extends AppCompatActivity {
 
+    private final String[] schemeItems = {"自定义对话", "智能对话"};
+    private final String[] dayItems = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
+    private final String[] voiceItems = {"男声", "女声"};
     private TextView cancelButton;
     private TextView confirmButton;
     private SQLiteOpenHelperUtil sqLiteOpenHelperUtil;
@@ -53,9 +56,22 @@ public class CallingAdderActivity extends AppCompatActivity {
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_add_phone);
+
+        //初始化数据库
         initDB();
+
+        //初始化控件
         initComponent();
+
+        //初始化控件默认值
         setInitValues();
+
+        //放置所有控件监听事件
+        setAllClickListenner();
+    }
+
+    public void initDB() {
+        sqLiteOpenHelperUtil = new SQLiteOpenHelperUtil(CallingAdderActivity.this);
     }
 
     private void initComponent() {
@@ -74,6 +90,10 @@ public class CallingAdderActivity extends AppCompatActivity {
         this.voiceText = (TextView) findViewById(R.id.void_text);
         this.caller = (EditText) findViewById(R.id.caller);
         this.hintText = (TextView) findViewById(R.id.add_phone_hint_text);
+
+    }
+
+    private void setAllClickListenner(){
         //设置TimePicker 初始参数
         List<String> data = new ArrayList<String>();
         List<String> seconds = new ArrayList<String>();
@@ -88,35 +108,40 @@ public class CallingAdderActivity extends AppCompatActivity {
 
         //监听事件
 
+        //重复
         repeatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showRepeatDialog();
             }
         });
+        //声音
         voiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showVoiceDialog();
             }
         });
+        //TimePicker's hour component.
         hour_pv.setOnSelectListener(new PickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
                 hour = text;
-                caculateTimePicker();
-                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()), caculate()));
+                calculateTimePicker();
+                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()), calculate()));
             }
         });
+        //TimePicker's minute component.
         minute_pv.setOnSelectListener(new PickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
                 minute = text;
-                caculateTimePicker();
-                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()), caculate()));
+                calculateTimePicker();
+                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()), calculate()));
             }
         });
 
+        //对话模式按钮
         schemeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +149,7 @@ public class CallingAdderActivity extends AppCompatActivity {
             }
         });
 
+        //响铃后删除
         this.delSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -134,12 +160,16 @@ public class CallingAdderActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //左上角取消按钮监听
         this.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                showCancelDialog();
             }
         });
+
+        //右上角确定按钮
         this.confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +178,7 @@ public class CallingAdderActivity extends AppCompatActivity {
                 values[1] = caller.getText().toString();
                 values[2] = schemeText.getText().toString();
                 values[3] = "";
-                values[4] = caculate();
+                values[4] = calculate();
                 values[5] = voiceText.getText().toString();
                 values[6] = "1";
                 values[7] = "1";
@@ -162,8 +192,8 @@ public class CallingAdderActivity extends AppCompatActivity {
         });
     }
 
-    private void caculateTimePicker(){
-        String chooseTime = caculate();
+    private void calculateTimePicker(){
+        String chooseTime = calculate();
         String nowDate = DateUtil.dateToString(new Date());
         int res = DateUtil.compareDate(chooseTime, nowDate);
         if(res==-1&&addEnable){
@@ -180,7 +210,7 @@ public class CallingAdderActivity extends AppCompatActivity {
         }
     }
 
-    private void showDialog() {
+    private void showCancelDialog() {
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
         final Dialog dialog1 = new Dialog(this);
@@ -211,15 +241,15 @@ public class CallingAdderActivity extends AppCompatActivity {
     }
 
     private void showRepeatDialog() {
-        final String[] items = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
+
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
         AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdderActivity.this);
-        listDialog.setItems(items, new DialogInterface.OnClickListener() {
+        listDialog.setItems(dayItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                repeatText.setText(items[which]);
-                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()), caculate()));
+                repeatText.setText(dayItems[which]);
+                hintText.setText(DateUtil.getDistanceTime(DateUtil.dateToString(new Date()), calculate()));
             }
 
         });
@@ -235,14 +265,17 @@ public class CallingAdderActivity extends AppCompatActivity {
     }
 
     private void showSchemeDialog() {
-        final String[] items = {"自定义对话", "智能对话"};
+
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
         AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdderActivity.this);
-        listDialog.setItems(items, new DialogInterface.OnClickListener() {
+        listDialog.setItems(schemeItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                schemeText.setText(items[which]);
+                schemeText.setText(schemeItems[which]);
+                if(which==0){
+
+                }
             }
 
         });
@@ -255,17 +288,21 @@ public class CallingAdderActivity extends AppCompatActivity {
         window.setAttributes(lp);
 
         alertDialog.show();
+    }
+
+    private void showDialogueContentDialog(){
+
     }
 
     private void showVoiceDialog() {
-        final String[] items = {"男声", "女声"};
+
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
         AlertDialog.Builder listDialog = new AlertDialog.Builder(CallingAdderActivity.this);
-        listDialog.setItems(items, new DialogInterface.OnClickListener() {
+        listDialog.setItems(voiceItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                voiceText.setText(items[which]);
+                voiceText.setText(voiceItems[which]);
             }
 
         });
@@ -280,7 +317,7 @@ public class CallingAdderActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private String caculate() {
+    private String calculate() {
         //通过repeat hour minute 计算响铃的yyyy-MM-dd HH：mm：ss
         Integer day = DateUtil.getIndOfDay(repeatText.getText().toString());
         Integer nowDay = DateUtil.getIndOfDay(DateUtil.getWeekOfDate(new Date()));
@@ -310,12 +347,10 @@ public class CallingAdderActivity extends AppCompatActivity {
         this.minute_pv.setSelected(minute);
         this.hour = hour.toString();
         this.minute = minute.toString();
-        this.schemeText.setText("自定义对话");
+        this.schemeText.setText(schemeItems[0]);
         this.voiceText.setText("男声");
 
     }
 
-    public void initDB() {
-        sqLiteOpenHelperUtil = new SQLiteOpenHelperUtil(CallingAdderActivity.this);
-    }
+
 }
