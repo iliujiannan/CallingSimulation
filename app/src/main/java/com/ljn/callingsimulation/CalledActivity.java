@@ -23,6 +23,9 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_main2);
 
+        //activity在锁屏状态下显示
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         FinishListActivity.getInstance().addActivity(this);
 
         ((TextView)findViewById(R.id.name)).setText(getIntent().getStringExtra("name"));
@@ -78,4 +81,9 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
         RUN_STATE = false;
         FinishListActivity.getInstance().exit();
     }
+
+    public void startMediaRecorder(){
+
+    }
+
 }
