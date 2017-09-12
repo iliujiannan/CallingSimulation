@@ -32,8 +32,8 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_main2);
         FinishListActivity.getInstance().addActivity(this);
 
-        calling = (Calling) getIntent().getSerializableExtra("calling");
-        ((TextView)findViewById(R.id.name)).setText(calling.getCaller());
+//        calling = (Calling) getIntent().getSerializableExtra("calling");
+//        ((TextView)findViewById(R.id.name)).setText(calling.getCaller());
 
         findViewById(R.id.end).setOnClickListener(this);
 
