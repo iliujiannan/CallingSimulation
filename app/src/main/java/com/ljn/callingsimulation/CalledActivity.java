@@ -31,8 +31,8 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         FinishListActivity.getInstance().addActivity(this);
 
-        calling = (Calling) getIntent().getSerializableExtra("calling");
-        ((TextView)findViewById(R.id.name)).setText(calling.getCaller());
+//        calling = (Calling) getIntent().getSerializableExtra("calling");
+//        ((TextView)findViewById(R.id.name)).setText(calling.getCaller());
 
         findViewById(R.id.end).setOnClickListener(this);
 
