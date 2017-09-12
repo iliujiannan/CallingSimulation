@@ -15,6 +15,7 @@ import android.widget.*;
 import com.ljn.callingsimulation.bean.Calling;
 import com.ljn.callingsimulation.util.DateUtil;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
+import com.ljn.callingsimulation.util.VoiceUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteOpenHelperUtil dbHelper;
     private MyAdapter myAdapter;
     public static Vector<Calling> callings;
+    public static VoiceUtil mVoiceUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(this,MainService.class));
         initDB();
         initComponent();
-
     }
 
     @Override
