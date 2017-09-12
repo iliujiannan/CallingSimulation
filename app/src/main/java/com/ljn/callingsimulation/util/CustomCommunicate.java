@@ -81,6 +81,7 @@ public class CustomCommunicate extends Thread implements ICommunicate {
                     MainActivity.mVoiceUtil.speak(mVoices.get(index));//不阻塞线程
                     //关闭线程
                     if (index == mVoices.size() -1 ) {
+                        System.out.println("size = " + mVoices.size() + "    index = " + index );
                         isGetVoiceRun = false;
                     }
             }

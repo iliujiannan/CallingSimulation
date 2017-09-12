@@ -17,7 +17,7 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
 
     int m = 0;
     int s = 0;
-    CustomCommunicate customCommunicate;
+    CustomCommunicate customCommunicate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +68,6 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }.start();
-        customCommunicate = new CustomCommunicate(calling);
-        customCommunicate.begin();
     }
 
     @Override
@@ -91,7 +89,9 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     protected void onDestroy() {
-        customCommunicate.end();
+        if(customCommunicate!=null) {
+            customCommunicate.end();
+        }
         super.onDestroy();
     }
 
@@ -99,6 +99,8 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
         //对话模式判断
         if(calling.getPattern().equals(CallingAdderActivity.schemeItems[0])){
             //自定义对话
+            customCommunicate = new CustomCommunicate(calling);
+            customCommunicate.begin();
         }else{
             //智能对话
         }
