@@ -78,16 +78,11 @@ public class CustomCommunicate extends Thread implements ICommunicate {
             volume = 10 * Math.log10(mean);
             Log.d(TAG, "分贝值:" + volume);
             if (shouldRunNext()) {
-//                if (!mHumanbegin){
-//                    mHumanbegin = true;
-//                    index--;
-//                }else {
-                    MainActivity.mVoiceUtil.speak(mVoices.get(index));//阻塞线程
+                    MainActivity.mVoiceUtil.speak(mVoices.get(index));//不阻塞线程
                     //关闭线程
-                    if (index == mVoices.size()) {
+                    if (index == mVoices.size() -1 ) {
                         isGetVoiceRun = false;
                     }
-//                }
             }
             // 大概一秒十次
             synchronized (mLock) {
