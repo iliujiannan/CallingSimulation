@@ -48,12 +48,13 @@ public class CallActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        setContentView(R.layout.call);
+
 
 
         //activity在锁屏状态下显示
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setContentView(R.layout.call);
         FinishListActivity.getInstance().addActivity(this);
 
         calling = (Calling)getIntent().getSerializableExtra("calling");
