@@ -114,6 +114,8 @@ public class CustomCommunicate extends Thread implements ICommunicate {
             if (timeLow <= confidence) {
                 index++;
                 System.out.println("shxy :" + "start");
+                timeLow = 0;
+                timeHigh = 0;
                 return true;
             }
             timeLow = 0;
