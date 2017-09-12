@@ -5,6 +5,7 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import com.ljn.callingsimulation.MainActivity;
 import com.ljn.callingsimulation.bean.Calling;
 
 import java.util.ArrayList;
@@ -29,11 +30,8 @@ public class CustomCommunicate extends Thread implements ICommunicate {
     private final int totalSample = 20;//每次采样次数
     private final int confidence = 4;//次数多于该值则认为有人在说话
     private List<String> mVoices = new ArrayList<>();//存储声音字符串的列表
-
-
+    private int index = 0;//当前播放下标
     private AudioRecord mAudioRecord;
-
-
     private Calling calling;
 
     public CustomCommunicate(Calling calling) {
@@ -75,8 +73,12 @@ public class CustomCommunicate extends Thread implements ICommunicate {
             double mean = v / (double) r;
             volume = 10 * Math.log10(mean);
             Log.d(TAG, "分贝值:" + volume);
-            if(shouldRunNext()){
-
+            if (shouldRunNext()) {
+                MainActivity.mVoiceUtil.speak(mVoices.get(index));//阻塞线程
+                //关闭线程
+                if (index == mVoices.size()) {
+                    isGetVoiceRun = false;
+                }
             }
             // 大概一秒十次
             synchronized (mLock) {
@@ -92,6 +94,11 @@ public class CustomCommunicate extends Thread implements ICommunicate {
         mAudioRecord = null;
     }
 
+    /**
+     * 是否应该开始播放下个录音
+     *
+     * @return ture 是 false 否
+     */
     private boolean shouldRunNext() {
         if (volume <= STANDER_DB) {
             timeLow++;
@@ -99,12 +106,11 @@ public class CustomCommunicate extends Thread implements ICommunicate {
             timeHigh++;
         }
         if (timeLow + timeHigh == totalSample) {
-            if (timeLow <= confidence)
+            if (timeLow <= confidence) {
+                index++;
                 return true;
+            }
         }
-        return false;
-    }
-    private boolean shouldShutDown(){
         return false;
     }
 
