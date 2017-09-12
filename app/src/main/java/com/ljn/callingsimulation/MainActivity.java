@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         FinishListActivity.getInstance().addActivity(this);
 
+        mVoiceUtil = new VoiceUtil(MainActivity.this);
         setContentView(R.layout.activity_main);
         startService(new Intent(this,MainService.class));
         initDB();

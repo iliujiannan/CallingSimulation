@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import com.ljn.callingsimulation.bean.Calling;
+import com.ljn.callingsimulation.util.CustomCommunicate;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
 
 public class CalledActivity extends AppCompatActivity implements View.OnClickListener {
@@ -16,6 +17,7 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
 
     int m = 0;
     int s = 0;
+    CustomCommunicate customCommunicate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,8 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_main2);
         FinishListActivity.getInstance().addActivity(this);
 
-//        calling = (Calling) getIntent().getSerializableExtra("calling");
-//        ((TextView)findViewById(R.id.name)).setText(calling.getCaller());
+        calling = (Calling) getIntent().getSerializableExtra("calling");
+        ((TextView)findViewById(R.id.name)).setText(calling.getCaller());
 
         findViewById(R.id.end).setOnClickListener(this);
 
@@ -66,8 +68,8 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }.start();
-
-
+        customCommunicate = new CustomCommunicate(calling);
+        customCommunicate.begin();
     }
 
     @Override
@@ -85,6 +87,12 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
         super.onBackPressed();
         RUN_STATE = false;
         FinishListActivity.getInstance().exit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        customCommunicate.end();
+        super.onDestroy();
     }
 
     private void startCommunication(){

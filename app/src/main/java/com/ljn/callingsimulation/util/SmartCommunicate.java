@@ -23,4 +23,9 @@ public class SmartCommunicate extends Thread implements ICommunicate{
     public void begin() {
         this.start();
     }
+
+    @Override
+    public void end() {
+
+    }
 }

@@ -6,4 +6,5 @@ package com.ljn.callingsimulation.util;
 
 public interface ICommunicate {
     void begin();
+    void end();
 }
