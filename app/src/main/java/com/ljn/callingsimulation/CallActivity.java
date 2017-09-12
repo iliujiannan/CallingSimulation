@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.ljn.callingsimulation.bean.Calling;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class CallActivity extends AppCompatActivity {
 
     ImageView call_im;
     int mTop, mBottom;
-    String name;
+    Calling calling;
     MediaPlayer mediaPlayer;
 
 
@@ -55,8 +56,8 @@ public class CallActivity extends AppCompatActivity {
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         FinishListActivity.getInstance().addActivity(this);
 
-        name = getIntent().getStringExtra("name");
-        ((TextView) findViewById(R.id.name)).setText(name);
+        calling = (Calling)getIntent().getSerializableExtra("calling");
+        ((TextView) findViewById(R.id.name)).setText(calling.getCaller());
         initView();
         onAnim();
         startMusic();
@@ -70,12 +71,6 @@ public class CallActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mediaPlayer.stop();
     }
 
     int lastY;
@@ -125,11 +120,15 @@ public class CallActivity extends AppCompatActivity {
                 if (Top < mTop + 10 && Top > mTop - 10) {
                     if (!end) {
                         Intent intent = new Intent(CallActivity.this, CalledActivity.class);
-                        intent.putExtra("name", name);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putSerializable("calling", calling);
+                        intent.putExtras(mBundle);
                         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
                                 CallActivity.this, call, "startAnim").toBundle());
+                        mediaPlayer.stop();
                     } else {
                         finish();
+                        mediaPlayer.stop();
                     }
                 } else {
                     v.layout(Left, mTop + 500, Right, mBottom);
