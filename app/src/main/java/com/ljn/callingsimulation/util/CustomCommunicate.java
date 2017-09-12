@@ -30,7 +30,8 @@ public class CustomCommunicate extends Thread implements ICommunicate {
     private final int totalSample = 20;//每次采样次数
     private final int confidence = 4;//次数多于该值则认为有人在说话
     private List<String> mVoices = new ArrayList<>();//存储声音字符串的列表
-    private int index = 0;//当前播放下标
+    private int index = -1;//当前播放下标
+    private boolean mHumanbegin = false;
     private AudioRecord mAudioRecord = null;
     private Calling calling;
 
@@ -75,13 +76,18 @@ public class CustomCommunicate extends Thread implements ICommunicate {
             // 平方和除以数据总长度，得到音量大小。
             double mean = v / (double) r;
             volume = 10 * Math.log10(mean);
-            //Log.d(TAG, "分贝值:" + volume);
+            Log.d(TAG, "分贝值:" + volume);
             if (shouldRunNext()) {
-                MainActivity.mVoiceUtil.speak(mVoices.get(index));//阻塞线程
-                //关闭线程
-                if (index == mVoices.size()) {
-                    isGetVoiceRun = false;
-                }
+//                if (!mHumanbegin){
+//                    mHumanbegin = true;
+//                    index--;
+//                }else {
+                    MainActivity.mVoiceUtil.speak(mVoices.get(index));//阻塞线程
+                    //关闭线程
+                    if (index == mVoices.size()) {
+                        isGetVoiceRun = false;
+                    }
+//                }
             }
             // 大概一秒十次
             synchronized (mLock) {
@@ -114,6 +120,8 @@ public class CustomCommunicate extends Thread implements ICommunicate {
                 System.out.println("shxy :" + "start");
                 return true;
             }
+            timeLow = 0;
+            timeHigh = 0;
         }
         System.out.println("shxy :" + "end");
         return false;

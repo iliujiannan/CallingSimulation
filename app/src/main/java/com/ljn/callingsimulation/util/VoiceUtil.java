@@ -20,7 +20,7 @@ public class VoiceUtil {
         this.mSpeechSynthesizer.setApiKey("Y85i0lnghdFKZxUtWTB3jnrl",
                 "pjPQ3Pcq51WxKbtwV94bVHr8dapPxqEn"/*这里只是为了让Demo正常运行使用APIKey,请替换成自己的APIKey*/);
         // 发音人（在线引擎），可用参数为0,1,2,3。。。（服务器端会动态增加，各值含义参考文档，以文档说明为准。0--普通女声，1--普通男声，2--特别男声，3--情感男声。。。）
-        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "3");
+        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
         // 设置Mix模式的合成策略
         this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
         // 授权检测接口(只是通过AuthInfo进行检验授权是否成功。)
