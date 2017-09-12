@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.ljn.callingsimulation.bean.Calling;
 
 public class CallActivity extends AppCompatActivity{
 
@@ -23,7 +24,7 @@ public class CallActivity extends AppCompatActivity{
     FloatingActionButton call_end;
     ImageView call_im;
     int mTop, mBottom;
-    String name;
+    Calling calling;
     MediaPlayer mediaPlayer;
 
     @Override
@@ -41,8 +42,8 @@ public class CallActivity extends AppCompatActivity{
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         FinishListActivity.getInstance().addActivity(this);
 
-        name = getIntent().getStringExtra("name");
-        ((TextView)findViewById(R.id.name)).setText(name);
+        calling = (Calling) getIntent().getSerializableExtra("calling");
+        ((TextView)findViewById(R.id.name)).setText(calling.getCaller());
         initView();
         onAnim();
         startMusic();
@@ -107,7 +108,9 @@ public class CallActivity extends AppCompatActivity{
                 if (Top == mTop) {
                     if (!end) {
                         Intent intent = new Intent(CallActivity.this, CalledActivity.class);
-                        intent.putExtra("name",name);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putSerializable("calling", calling);
+                        intent.putExtras(mBundle);
                         finish();
                         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
                                 CallActivity.this, call, "startAnim").toBundle());

@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by 12390 on 2017/8/30.
  */
-public class Calling{
+public class Calling implements Serializable{
     private Integer callingId;
     private String caller;
     private String startTime;

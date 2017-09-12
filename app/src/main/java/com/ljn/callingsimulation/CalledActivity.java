@@ -5,11 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import com.ljn.callingsimulation.bean.Calling;
+import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
 
 public class CalledActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView call_time;
     boolean RUN_STATE = true;
+    private Calling calling;
 
     int m = 0;
     int s = 0;
@@ -28,7 +31,8 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         FinishListActivity.getInstance().addActivity(this);
 
-        ((TextView)findViewById(R.id.name)).setText(getIntent().getStringExtra("name"));
+        calling = (Calling) getIntent().getSerializableExtra("calling");
+        ((TextView)findViewById(R.id.name)).setText(calling.getCaller());
 
         findViewById(R.id.end).setOnClickListener(this);
 
@@ -82,8 +86,12 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
         FinishListActivity.getInstance().exit();
     }
 
-    public void startMediaRecorder(){
-
+    private void startCommunication(){
+        //对话模式判断
+        if(calling.getPattern().equals(CallingAdderActivity.schemeItems[0])){
+            //自定义对话
+        }else{
+            //智能对话
+        }
     }
-
 }

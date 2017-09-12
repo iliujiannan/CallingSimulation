@@ -101,20 +101,23 @@ public class PickerView extends View{
 
     private void performSelect()
     {
-        if (mSelectListener != null)
+        if (mSelectListener != null) {
             mSelectListener.onSelect(mDataList.get(mCurrentSelected));
+            System.out.println(mCurrentSelected);
+        }
     }
 
-    public void setData(List<String> datas)
+    public void setData(List<String> datas, int initValue)
     {
         mDataList = datas;
-        mCurrentSelected = datas.size() / 2;
+        mCurrentSelected = initValue;
         invalidate();
     }
 
     public void setSelected(int selected)
     {
         mCurrentSelected = selected;
+        System.out.println(mCurrentSelected);
     }
 
     private void moveHeadToTail()

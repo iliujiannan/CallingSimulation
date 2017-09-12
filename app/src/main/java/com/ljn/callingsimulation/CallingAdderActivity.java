@@ -6,12 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.*;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.ljn.callingsimulation.util.DateUtil;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
@@ -25,9 +27,9 @@ import java.util.List;
  */
 public class CallingAdderActivity extends AppCompatActivity {
 
-    private final String[] schemeItems = {"自定义对话", "智能对话"};
-    private final String[] dayItems = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
-    private final String[] voiceItems = {"男声", "女声"};
+    public static final String[] schemeItems = {"自定义对话", "智能对话"};
+    public static final String[] dayItems = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
+    public static final String[] voiceItems = {"男声", "女声"};
     private TextView cancelButton;
     private TextView confirmButton;
     private SQLiteOpenHelperUtil sqLiteOpenHelperUtil;
@@ -46,7 +48,10 @@ public class CallingAdderActivity extends AppCompatActivity {
     private EditText caller;
     private String del = "1";
     private Boolean addEnable = true;
-    private Boolean subEnable = true;
+    private String dialogueContent = "";
+    private String content1 = "";
+    private String content2 = "";
+    private String content3 = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,17 +99,7 @@ public class CallingAdderActivity extends AppCompatActivity {
     }
 
     private void setAllClickListenner(){
-        //设置TimePicker 初始参数
-        List<String> data = new ArrayList<String>();
-        List<String> seconds = new ArrayList<String>();
-        for (int i = 0; i < 24; i++) {
-            data.add(i < 10 ? "0" + i : "" + i);
-        }
-        for (int i = 0; i < 60; i++) {
-            seconds.add(i < 10 ? "0" + i : "" + i);
-        }
-        hour_pv.setData(data);
-        minute_pv.setData(seconds);
+
 
         //监听事件
 
@@ -177,7 +172,7 @@ public class CallingAdderActivity extends AppCompatActivity {
                 values[0] = "";
                 values[1] = caller.getText().toString();
                 values[2] = schemeText.getText().toString();
-                values[3] = "";
+                values[3] = dialogueContent;
                 values[4] = calculate();
                 values[5] = voiceText.getText().toString();
                 values[6] = "1";
@@ -274,7 +269,7 @@ public class CallingAdderActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 schemeText.setText(schemeItems[which]);
                 if(which==0){
-
+                    showDialogueContentDialog();
                 }
             }
 
@@ -290,8 +285,80 @@ public class CallingAdderActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void showDialogueContentDialog(){
+    private void showDialogueContentDialog() {
+//        TextInputLayout mTextInput1 = new TextInputLayout(CallingAdderActivity.this);
+//        TextInputLayout mTextInput2 = new TextInputLayout(CallingAdderActivity.this);
+//        TextInputLayout mTextInput3 = new TextInputLayout(CallingAdderActivity.this);
+        final EditText mEditText1 = new EditText(CallingAdderActivity.this);
+        final EditText mEditText2 = new EditText(CallingAdderActivity.this);
+        final EditText mEditText3 = new EditText(CallingAdderActivity.this);
+        mEditText1.setTextSize(16);
+        mEditText2.setTextSize(16);
+        mEditText3.setTextSize(16);
+        if(content1.equals("")) {
+            mEditText1.setHint("对话内容1");
+        }else{
+            mEditText1.setText(content1);
+        }
+        if(content2.equals("")) {
+            mEditText2.setHint("对话内容2");
+        }else{
+            mEditText2.setText(content2);
+        }
+        if(content3.equals("")) {
+            mEditText3.setHint("对话内容3");
+        }else{
+            mEditText3.setText(content3);
+        }
+        mEditText1.setSingleLine(true);
+        mEditText2.setSingleLine(true);
+        mEditText3.setSingleLine(true);
+        mEditText1.setMaxLines(1);
+        mEditText2.setMaxLines(1);
+        mEditText3.setMaxLines(1);
 
+//        mTextInput1.setHint("对话内容1");
+//        mTextInput2.setHint("对话内容2");
+//        mTextInput3.setHint("对话内容3");
+//        mTextInput1.addView(mEditText1);
+//        mTextInput2.addView(mEditText2);
+//        mTextInput3.addView(mEditText3);
+        LinearLayout mLinearLayout = new LinearLayout(CallingAdderActivity.this);
+        mLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        mLinearLayout.addView(mEditText1);
+        mLinearLayout.addView(mEditText2);
+        mLinearLayout.addView(mEditText3);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(CallingAdderActivity.this);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                content1 = mEditText1.getText().toString();
+                content2 = mEditText2.getText().toString();
+                content3 = mEditText3.getText().toString();
+                dialogueContent = content1 + "\n" + content2 + "\n" + content3;
+                System.out.println(dialogueContent);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog mInputDialog = builder.create();
+        mInputDialog.setTitle("请设置对话内容");
+        mInputDialog.setView(mLinearLayout);
+
+
+        WindowManager m = getWindowManager();
+        Display d = m.getDefaultDisplay();
+        Window window = mInputDialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        window.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM);
+        lp.height = (int) (d.getHeight() * 0.3);
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels;
+        window.setAttributes(lp);
+
+        mInputDialog.show();
     }
 
     private void showVoiceDialog() {
@@ -340,14 +407,27 @@ public class CallingAdderActivity extends AppCompatActivity {
         //初始化hintText,TimePicker, repeatText
         this.repeatText.setText(DateUtil.getWeekOfDate(DateUtil.stringToDate(DateUtil.getNextTHTime())));
         this.hintText.setText("将在1小时59分后来电");
+
+        //设置TimePicker 初始参数
+        List<String> data = new ArrayList<String>();
+        List<String> seconds = new ArrayList<String>();
+        for (int i = 0; i < 24; i++) {
+            data.add(i < 10 ? "0" + i : "" + i);
+        }
+        for (int i = 0; i < 60; i++) {
+            seconds.add(i < 10 ? "0" + i : "" + i);
+        }
         String dateTime = DateUtil.getNextTHTime();
         Integer hour = Integer.valueOf(dateTime.substring(11, 13));
         Integer minute = Integer.valueOf(dateTime.substring(14, 16));
-        this.hour_pv.setSelected(hour);
-        this.minute_pv.setSelected(minute);
+//        this.hour_pv.setSelected(16);
+//        this.minute_pv.setSelected(20);
         this.hour = hour.toString();
         this.minute = minute.toString();
-        this.schemeText.setText(schemeItems[0]);
+        hour_pv.setData(data, hour);
+        minute_pv.setData(seconds, minute);
+
+        this.schemeText.setText(schemeItems[1]);
         this.voiceText.setText("男声");
 
     }

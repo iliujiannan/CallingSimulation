@@ -2,6 +2,7 @@ package com.ljn.callingsimulation;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import com.ljn.callingsimulation.bean.Calling;
 import com.ljn.callingsimulation.util.DateUtil;
@@ -40,7 +41,9 @@ public class MainService extends Service {
 //                                sendBroadcast(intent);
 
                                 Intent intent = new Intent(MainService.this,CallActivity.class);
-                                intent.putExtra("name",calling.getCaller());
+                                Bundle mBundle = new Bundle();
+                                mBundle.putSerializable("calling", calling);
+                                intent.putExtras(mBundle);
                                 MainActivity.callings.remove(calling);
                                 String[] values = {String.valueOf(calling.getCallingId())};
                                 dbHelper.doDelete("calling_id=?", values);

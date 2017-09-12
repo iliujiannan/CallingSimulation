@@ -27,6 +27,7 @@
         </activity>
         <service android:name=".MainService">
         </service>
+        <service android:name=".util.CustomCommunicate"/>
         <activity android:name=".CallActivity"/>
         <activity android:name=".CalledActivity"/>
     </application>
