@@ -1,5 +1,9 @@
 package com.ljn.callingsimulation;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.ActivityOptions;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,18 +18,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.ljn.callingsimulation.bean.Calling;
 
-public class CallActivity extends AppCompatActivity{
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class CallActivity extends AppCompatActivity {
 
     FloatingActionButton call;
     FloatingActionButton call_end;
+    FloatingActionButton call_message;
+
+    ArrayList<FloatingActionButton> floatingActionButtons = new ArrayList<>();
+
     ImageView call_im;
     int mTop, mBottom;
-    Calling calling;
+    String name;
     MediaPlayer mediaPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +52,26 @@ public class CallActivity extends AppCompatActivity{
 
         //activity在锁屏状态下显示
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         FinishListActivity.getInstance().addActivity(this);
 
-        calling = (Calling) getIntent().getSerializableExtra("calling");
-        ((TextView)findViewById(R.id.name)).setText(calling.getCaller());
+        name = getIntent().getStringExtra("name");
+        ((TextView) findViewById(R.id.name)).setText(name);
         initView();
         onAnim();
         startMusic();
 
+        //初次开启动画
+        startAnim();
+
     }
 
-    private void startMusic(){
-        mediaPlayer = MediaPlayer.create(this,getSystemDefultRingtoneUri());
+    private void startMusic() {
+        mediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -105,13 +122,10 @@ public class CallActivity extends AppCompatActivity{
                 lastY = (int) event.getRawY();
                 break;
             case MotionEvent.ACTION_UP:
-                if (Top == mTop) {
+                if (Top < mTop + 10 && Top > mTop - 10) {
                     if (!end) {
                         Intent intent = new Intent(CallActivity.this, CalledActivity.class);
-                        Bundle mBundle = new Bundle();
-                        mBundle.putSerializable("calling", calling);
-                        intent.putExtras(mBundle);
-                        finish();
+                        intent.putExtra("name", name);
                         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
                                 CallActivity.this, call, "startAnim").toBundle());
                     } else {
@@ -127,12 +141,86 @@ public class CallActivity extends AppCompatActivity{
     private void initView() {
         call = (FloatingActionButton) findViewById(R.id.call);
         call_end = (FloatingActionButton) findViewById(R.id.call_end);
+        call_message = (FloatingActionButton) findViewById(R.id.call_message);
 //        call_im = (ImageView) findViewById(R.id.call_im);
         mTop = 0;
         mBottom = 0;
+
+        floatingActionButtons.add(call_end);
+        floatingActionButtons.add(call);
+        floatingActionButtons.add(call_message);
     }
+
     private Uri getSystemDefultRingtoneUri() {
         return RingtoneManager.getActualDefaultRingtoneUri(this,
                 RingtoneManager.TYPE_RINGTONE);
+    }
+
+    /**
+     * 关闭菜单动画
+     */
+    private void stopAnim() {
+
+        for (int i = 0; i < 3; i++) {
+            ObjectAnimator animator;
+            if (i == 1) {
+                animator = ObjectAnimator.ofFloat(floatingActionButtons.get(i), "translationY", -(150F), 0F);
+            } else {
+                animator = ObjectAnimator.ofFloat(floatingActionButtons.get(i), "translationY", -(80F), 0F);
+            }
+            animator.setDuration(1000); //动画持续时间
+            animator.setInterpolator(new BounceInterpolator());
+            animator.setStartDelay(i * 500);////动画间隔
+            animator.start();
+
+            final int finalI = i;
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (finalI == 2)
+                        startAnim();
+                }
+            });
+        }
+
+    }
+
+    /**
+     * 开启菜单动画
+     */
+    private void startAnim() {
+
+        for (int i = 0; i < 3; i++) {
+            AnimatorSet animatorSet = new AnimatorSet();//组合动画
+            ObjectAnimator animator;
+            if (i == 1) {
+                animator = ObjectAnimator.ofFloat(floatingActionButtons.get(i), "translationY", 0, -(150F));
+            } else {
+                animator = ObjectAnimator.ofFloat(floatingActionButtons.get(i), "translationY", 0, -(80F));
+            }
+            animatorSet.playTogether(animator);
+            animatorSet.setDuration(1000);  //动画持续时间
+            animatorSet.setInterpolator(new BounceInterpolator());
+            animatorSet.setStartDelay((i + 1) * 500); //动画间隔
+            animatorSet.start();
+
+            final int finalI = i;
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (finalI == 2) {
+                        stopAnim();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 屏蔽返回按钮
+     */
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
     }
 }

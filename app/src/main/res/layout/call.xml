@@ -46,7 +46,8 @@
         android:layout_gravity="bottom|center"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:layout_width="60dp"
+        android:id="@+id/call_message"
+        android:layout_width="61dp"
         android:layout_height="60dp"
         app:backgroundTint="#cecece"
         android:src="@drawable/ic_sms_black_24dp"
