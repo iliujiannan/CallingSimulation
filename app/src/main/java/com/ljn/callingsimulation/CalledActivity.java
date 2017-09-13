@@ -68,6 +68,7 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }.start();
+        startCommunication();
     }
 
     @Override
