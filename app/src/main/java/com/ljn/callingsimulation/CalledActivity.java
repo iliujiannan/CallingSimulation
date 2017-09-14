@@ -100,7 +100,7 @@ public class CalledActivity extends AppCompatActivity implements View.OnClickLis
         //对话模式判断
         if(calling.getPattern().equals(CallingAdderActivity.schemeItems[0])){
             //自定义对话
-            customCommunicate = new CustomCommunicate(calling);
+            customCommunicate = new CustomCommunicate(calling, CalledActivity.this);
             customCommunicate.begin();
         }else{
             //智能对话

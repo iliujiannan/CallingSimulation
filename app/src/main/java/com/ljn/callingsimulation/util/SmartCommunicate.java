@@ -16,16 +16,18 @@ public class SmartCommunicate extends Thread implements ICommunicate{
 
     @Override
     public void run() {
-        super.run();
-    }
 
-    @Override
-    public void begin() {
-        this.start();
+        
+
     }
 
     @Override
     public void end() {
 
+    }
+
+    @Override
+    public void begin() {
+        this.start();
     }
 }

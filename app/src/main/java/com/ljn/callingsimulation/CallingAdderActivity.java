@@ -101,6 +101,7 @@ public class CallingAdderActivity extends AppCompatActivity {
     private void setAllClickListenner(){
 
 
+
         //监听事件
 
         //重复
@@ -180,8 +181,7 @@ public class CallingAdderActivity extends AppCompatActivity {
                 values[8] = "1";
                 values[9] = del;
                 sqLiteOpenHelperUtil.doInsert(values);
-                //sqLiteOpenHelperUtil.doInsert(new String[]{"","ljn", "1", "", "2017-09-05 17:00:00", "1", "1","1", "1","1"});
-                finish();
+                  finish();
                 CallingAdderActivity.this.startActivity(new Intent(CallingAdderActivity.this, MainActivity.class));
             }
         });
@@ -432,5 +432,8 @@ public class CallingAdderActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        showCancelDialog();
+    }
 }

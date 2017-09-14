@@ -1,8 +1,11 @@
 package com.ljn.callingsimulation.util;
 
+import android.content.Context;
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.util.Log;
 
 import com.ljn.callingsimulation.MainActivity;
@@ -34,8 +37,13 @@ public class CustomCommunicate extends Thread implements ICommunicate {
     private boolean mHumanbegin = false;
     private AudioRecord mAudioRecord = null;
     private Calling calling;
+    private Context context;
 
-    public CustomCommunicate(Calling calling) {
+    public CustomCommunicate(Calling calling, Context context) {
+
+        this.context = context;
+
+
         this.calling = calling;
         isGetVoiceRun = false;
         if (mAudioRecord == null) {
@@ -62,6 +70,14 @@ public class CustomCommunicate extends Thread implements ICommunicate {
 
     @Override
     public void run() {
+        //听筒模式
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setSpeakerphoneOn(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        } else {
+            audioManager.setMode(AudioManager.MODE_IN_CALL);
+        }
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         mAudioRecord.startRecording();
         short[] buffer = new short[BUFFER_SIZE];
@@ -78,7 +94,8 @@ public class CustomCommunicate extends Thread implements ICommunicate {
             volume = 10 * Math.log10(mean);
             Log.d(TAG, "分贝值:" + volume);
             if (shouldRunNext()) {
-                    MainActivity.mVoiceUtil.speak(mVoices.get(index));//不阻塞线程
+
+                    MainActivity.mVoiceUtil.speak(mVoices.get(index), calling.getCallerSex());//不阻塞线程
                     //关闭线程
                     if (index == mVoices.size() -1 ) {
                         System.out.println("size = " + mVoices.size() + "    index = " + index );
@@ -111,7 +128,7 @@ public class CustomCommunicate extends Thread implements ICommunicate {
             timeHigh++;
         }
         if (timeLow + timeHigh == totalSample) {
-            if (timeLow <= confidence) {
+            if (timeHigh < confidence) {
                 index++;
                 System.out.println("shxy :" + "start");
                 timeLow = 0;
@@ -133,6 +150,10 @@ public class CustomCommunicate extends Thread implements ICommunicate {
 
     @Override
     public void end() {
+        //听筒模式
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setMode(AudioManager.MODE_NORMAL);
+        audioManager.setSpeakerphoneOn(true);
         isGetVoiceRun = false;
     }
 }

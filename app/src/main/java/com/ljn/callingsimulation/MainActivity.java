@@ -1,7 +1,7 @@
 package com.ljn.callingsimulation;
 
 import android.content.*;
-import android.media.MediaPlayer;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static Vector<Calling> callings;
     public static VoiceUtil mVoiceUtil;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         FinishListActivity.getInstance().addActivity(this);
 
         mVoiceUtil = new VoiceUtil(MainActivity.this);
+        checkPermission();
         setContentView(R.layout.activity_main);
         startService(new Intent(this,MainService.class));
         initDB();
@@ -52,6 +54,17 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    private void checkPermission(){
+        PackageManager pm = getPackageManager();
+        boolean permission = (PackageManager.PERMISSION_GRANTED ==
+                pm.checkPermission("android.permission.RECORD_AUDIO", "com.ljn.callingsimulation"));
+        if(!permission){
+            Toast.makeText(getApplicationContext(), "未获得录音权限，请添加权限后重新打开此应用",
+                    Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+    }
     private void initComponent(){
         settingButton = (TextView) findViewById(R.id.add_calling_button);
         addCallingButton = (FloatingActionButton) findViewById(R.id.b_add_phone);

@@ -1,6 +1,8 @@
 package com.ljn.callingsimulation.util;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.os.Build;
 import com.baidu.tts.client.SpeechSynthesizer;
 import com.baidu.tts.client.TtsMode;
 
@@ -23,15 +25,23 @@ public class VoiceUtil {
         this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
         // 设置Mix模式的合成策略
         this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
+
         // 授权检测接口(只是通过AuthInfo进行检验授权是否成功。)
         // AuthInfo接口用于测试开发者是否成功申请了在线或者离线授权，如果测试授权成功了，可以删除AuthInfo部分的代码（该接口首次验证时比较耗时），不会影响正常使用（合成使用时SDK内部会自动验证授权）
+
 
         // 初始化tts
         mSpeechSynthesizer.initTts(TtsMode.ONLINE);
 
+
     }
 
-    public Integer speak(String text) {
+    public Integer speak(String text, String sex) {
+        String mSex = "1";
+        if(sex.equals("女声"))
+            mSex = "0";
+
+        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, mSex);
         int result = this.mSpeechSynthesizer.speak(text);
         return result;
     }
