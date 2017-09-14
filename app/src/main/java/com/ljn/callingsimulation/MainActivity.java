@@ -28,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private ListView callingList;
     private SQLiteOpenHelperUtil dbHelper;
     private MyAdapter myAdapter;
-    public static Vector<Calling> callings;
+    public static Vector<Calling> callings = null;
     public static VoiceUtil mVoiceUtil;
+    private TextView noContentText;
 
 
     @Override
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void initComponent(){
+        noContentText = (TextView) findViewById(R.id.main_no_content_hint);
+        checkText();
         settingButton = (TextView) findViewById(R.id.add_calling_button);
         addCallingButton = (FloatingActionButton) findViewById(R.id.b_add_phone);
         callingList = (ListView)findViewById(R.id.index_list_view);
@@ -96,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.callings.remove(position);
                         dbHelper.doDelete("calling_id=?", values);
                         myAdapter.notifyDataSetChanged();
+                        checkText();
+
+
                     }
                 }).show();
                 return true;
@@ -123,6 +129,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
 
+    }
+    private void checkText(){
+        if(callings.size()>=1){
+            noContentText.setVisibility(View.INVISIBLE);
+            System.out.println("feikong");
+        }else{
+            noContentText.setVisibility(View.VISIBLE);
+            System.out.println("kong");
+        }
     }
     private void initDB(){
         dbHelper = new SQLiteOpenHelperUtil(MainActivity.this);
@@ -180,8 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
             viewHolder.statrTime.setText(time);
             viewHolder.caller.setText(MainActivity.callings.get(position).getCaller() + "\n" + "将在" + remaining_time + "后来电.");
-            final String isOpen = MainActivity.callings.get(position).getIsOpen();
-            if( isOpen.equals( "0")){
+            if( MainActivity.callings.get(position).getIsOpen().equals( "0")){
                 viewHolder.mSwitch.setChecked(false);
             }else{
                 viewHolder.mSwitch.setChecked(true);
