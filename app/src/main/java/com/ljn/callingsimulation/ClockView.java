@@ -106,11 +106,11 @@ public class ClockView extends View{
         calendar = Calendar.getInstance();
         //开始画圆盘
         float radius = width / 2 - 20;//圆盘的半径
-        for(int i = 0; i < 480; i++){
+        for(int i = 0; i < 600; i++){
             //画刻度之前，先把画布的状态保存下来
             canvas.save();
             //让画布旋转3/5度，参数一是需要旋转的度数，参数2,3是旋转的圆心
-            canvas.rotate(i*3/4 , getWidth() / 2, getHeight() / 2);
+            canvas.rotate(i*1 , getWidth() / 2, getHeight() / 2);
             //旋转后再圆上画上一长10dp的刻度线
             canvas.drawLine(width / 2, height / 2 - radius, width / 2, height / 2 - radius + 15, circlePaint);
             //恢复画布
@@ -126,10 +126,10 @@ public class ClockView extends View{
         canvas.drawArc(oval, 92, 86, false, ArcPaint);
         canvas.drawArc(oval, 182, 86, false, ArcPaint);
         //画数字，因为时间问题没有自己总结好算法，具体位置需要自己调整
-        canvas.drawText("12", getWidth() / 2, getHeight() / 2 - radius - 30, numPaint);
-        canvas.drawText("3", getWidth() / 2 + radius + 33, getHeight() / 2, numPaint);
-        canvas.drawText("6", getWidth() / 2, getHeight() / 2 + radius + 43, numPaint);
-        canvas.drawText("9", getWidth() / 2 - radius - 43, getHeight() / 2, numPaint);
+        canvas.drawText("12", getWidth() / 2 - 2, getHeight() / 2 - radius - 30 + 30, numPaint);
+        canvas.drawText("3", getWidth() / 2 + radius + 33 - 32, getHeight() / 2, numPaint);
+        canvas.drawText("6", getWidth() / 2, getHeight() / 2 + radius + 43 - 32, numPaint);
+        canvas.drawText("9", getWidth() / 2 - radius - 43 + 30, getHeight() / 2, numPaint);
 
         //画圆心
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, 10, centurePaint);
@@ -138,14 +138,14 @@ public class ClockView extends View{
         int hour = calendar.get(Calendar.HOUR);//当前小时数
         canvas.save();
         canvas.rotate(hour * 30, getWidth() / 2, getHeight() / 2);
-        canvas.drawLine(getWidth() / 2, getHeight() / 2 - 10, getWidth() / 2, getHeight() / 2 - radius + 80, hourPaint);
+        canvas.drawLine(getWidth() / 2, getHeight() / 2 - 10, getWidth() / 2, getHeight() / 2 - radius + 80 + 40, hourPaint);
         canvas.restore();
 
         //画分针
         int minute = calendar.get(Calendar.MINUTE);
         canvas.save();
         canvas.rotate(minute * 6, getWidth() / 2, getHeight() / 2);
-        canvas.drawLine(getWidth() / 2, getHeight() / 2 - 10, getWidth() / 2, getHeight() / 2 - radius + 20, minutePaint);
+        canvas.drawLine(getWidth() / 2, getHeight() / 2 - 10, getWidth() / 2, getHeight() / 2 - radius + 20 +50, minutePaint);
         canvas.restore();
 
         //画秒针
@@ -155,9 +155,9 @@ public class ClockView extends View{
         canvas.save();
         canvas.rotate(30 * second / 5, getWidth() / 2, getHeight() / 2);
         //Path是画自定义图形的对象，在构造方法中实例化
-        path.moveTo(getWidth() / 2, getHeight() / 2 - radius - 5);//三角形的顶点
-        path.lineTo(getWidth() / 2 - 10, getHeight() / 2 - radius + 10);//底边左端点
-        path.lineTo(getWidth() / 2 + 10, getHeight() / 2 - radius + 10);//底边右端点
+        path.moveTo(getWidth() / 2 + 25, getHeight() / 2 - radius + 30);//三角形的顶点
+        path.lineTo(getWidth() / 2 - 10 + 18, getHeight() / 2 - radius + 48);//底边左端点
+        path.lineTo(getWidth() / 2 + 10 + 30, getHeight() / 2 - radius + 50);//底边右端点
         path.close();//让三个点形成封闭的图形
         canvas.drawPath(path, secondPaint);//把形成的图形化在画布上
         //画渐变进度条

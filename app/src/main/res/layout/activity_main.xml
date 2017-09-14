@@ -10,19 +10,26 @@
     <android.support.design.widget.FloatingActionButton
             android:layout_width="53dp"
             android:layout_height="53dp"
-            app:backgroundTint="#FF139C57"
+            app:backgroundTint="#FF136F57"
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
             android:src="@drawable/add_button"
             android:clickable="true"
             android:id="@+id/b_add_phone"
     />
+    <RelativeLayout
+            android:background="#FF136F57"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:fitsSystemWindows="true">
 
+    </RelativeLayout>
     <RelativeLayout
             android:id="@+id/top_bar"
-            android:background="#FF139C57"
+            android:background="#FF136F57"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:fitsSystemWindows="true">
         <TextView
                 android:id="@+id/text_bar"
@@ -49,12 +56,12 @@
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="320dp"
                     android:layout_marginTop="50dp"
-                    android:background="#FF139C57">
+                    android:background="#FF136F57">
 
         <com.ljn.callingsimulation.ClockView
                 android:layout_centerInParent="true"
-                android:layout_width="300dp"
-                android:layout_height="300dp" />
+                android:layout_width="270dp"
+                android:layout_height="270dp" />
     </RelativeLayout>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
               android:layout_marginTop="470dp"
