@@ -171,7 +171,7 @@ public class CallingAdderActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String[] values = new String[10];
                 values[0] = "";
-                values[1] = caller.getText().toString();
+                values[1] = (caller.getText().toString()).replaceAll("\n","");
                 values[2] = schemeText.getText().toString();
                 values[3] = dialogueContent;
                 values[4] = calculate();
@@ -181,7 +181,7 @@ public class CallingAdderActivity extends AppCompatActivity {
                 values[8] = "1";
                 values[9] = del;
                 sqLiteOpenHelperUtil.doInsert(values);
-                  finish();
+                finish();
                 CallingAdderActivity.this.startActivity(new Intent(CallingAdderActivity.this, MainActivity.class));
             }
         });
@@ -332,10 +332,27 @@ public class CallingAdderActivity extends AppCompatActivity {
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                content1 = mEditText1.getText().toString();
-                content2 = mEditText2.getText().toString();
-                content3 = mEditText3.getText().toString();
-                dialogueContent = content1 + "\n" + content2 + "\n" + content3;
+                content1 = mEditText1.getText().toString().replaceAll(" ","");
+                content2 = mEditText2.getText().toString().replaceAll(" ","");
+                content3 = mEditText3.getText().toString().replaceAll(" ","");
+                if(content1.equals("")){
+                    content1 = "赶紧回来吃饭";
+                }
+                if(content2.equals("")){
+                    content2 = "快点";
+                }
+                if(content3.equals("")){
+                    content3 = "再见";
+                }
+                if(!content1.equals("")){
+                    dialogueContent = dialogueContent+ content1 + "\n";
+                }
+                if(!content2.equals("")){
+                    dialogueContent = dialogueContent + content2 + "\n";
+                }
+                if(!content3.equals("")){
+                    dialogueContent = dialogueContent + content3;
+                }
                 System.out.println(dialogueContent);
             }
         });

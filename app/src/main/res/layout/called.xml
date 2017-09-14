@@ -119,7 +119,7 @@
         <include layout="@layout/item3" />
     </FrameLayout>
 
-    <TextView
+    <TextView android:id="@+id/speaker"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:text="免提"

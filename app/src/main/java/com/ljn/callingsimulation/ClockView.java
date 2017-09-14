@@ -126,10 +126,10 @@ public class ClockView extends View{
         canvas.drawArc(oval, 92, 86, false, ArcPaint);
         canvas.drawArc(oval, 182, 86, false, ArcPaint);
         //画数字，因为时间问题没有自己总结好算法，具体位置需要自己调整
-        canvas.drawText("12", getWidth() / 2 - 2, getHeight() / 2 - radius - 30 + 30, numPaint);
-        canvas.drawText("3", getWidth() / 2 + radius + 33 - 32, getHeight() / 2, numPaint);
-        canvas.drawText("6", getWidth() / 2, getHeight() / 2 + radius + 43 - 32, numPaint);
-        canvas.drawText("9", getWidth() / 2 - radius - 43 + 30, getHeight() / 2, numPaint);
+        canvas.drawText("12", getWidth() / 2 - 10, getHeight() / 2 - radius - 30 + 33, numPaint);
+        canvas.drawText("3", getWidth() / 2 + radius + 33 - 32, getHeight() / 2 + 4, numPaint);
+        canvas.drawText("6", getWidth() / 2 - 4, getHeight() / 2 + radius + 43 - 32, numPaint);
+        canvas.drawText("9", getWidth() / 2 - radius - 43 + 31, getHeight() / 2 + 3, numPaint);
 
         //画圆心
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, 10, centurePaint);
@@ -155,9 +155,9 @@ public class ClockView extends View{
         canvas.save();
         canvas.rotate(30 * second / 5, getWidth() / 2, getHeight() / 2);
         //Path是画自定义图形的对象，在构造方法中实例化
-        path.moveTo(getWidth() / 2 + 25, getHeight() / 2 - radius + 30);//三角形的顶点
-        path.lineTo(getWidth() / 2 - 10 + 18, getHeight() / 2 - radius + 48);//底边左端点
-        path.lineTo(getWidth() / 2 + 10 + 30, getHeight() / 2 - radius + 50);//底边右端点
+        path.moveTo(getWidth() / 2 + 44, getHeight() / 2 - radius + 30);//三角形的顶点
+        path.lineTo(getWidth() / 2 - 10 + 35, getHeight() / 2 - radius + 48);//底边左端点
+        path.lineTo(getWidth() / 2 + 10 + 45, getHeight() / 2 - radius + 50);//底边右端点
         path.close();//让三个点形成封闭的图形
         canvas.drawPath(path, secondPaint);//把形成的图形化在画布上
         //画渐变进度条

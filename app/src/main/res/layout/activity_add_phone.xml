@@ -284,6 +284,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginLeft="120dp"
+            android:singleLine="true"
             android:layout_marginTop="16dp"
             android:background="@null"
             android:hint="输入联系人姓名"

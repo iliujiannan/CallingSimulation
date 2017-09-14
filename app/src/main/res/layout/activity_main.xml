@@ -55,7 +55,7 @@
     </RelativeLayout>
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="320dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="60dp"
                     android:background="#FF136F57">
 
         <com.ljn.callingsimulation.ClockView

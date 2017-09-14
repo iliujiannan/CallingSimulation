@@ -70,14 +70,7 @@ public class CustomCommunicate extends Thread implements ICommunicate {
 
     @Override
     public void run() {
-        //听筒模式
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setSpeakerphoneOn(false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
-            audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        } else {
-            audioManager.setMode(AudioManager.MODE_IN_CALL);
-        }
+
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_URGENT_AUDIO);
         mAudioRecord.startRecording();
         short[] buffer = new short[BUFFER_SIZE];

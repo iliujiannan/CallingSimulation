@@ -133,10 +133,8 @@ public class MainActivity extends AppCompatActivity {
     private void checkText(){
         if(callings.size()>=1){
             noContentText.setVisibility(View.INVISIBLE);
-            System.out.println("feikong");
         }else{
             noContentText.setVisibility(View.VISIBLE);
-            System.out.println("kong");
         }
     }
     private void initDB(){
