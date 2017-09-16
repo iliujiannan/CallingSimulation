@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
@@ -15,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.githang.statusbar.StatusBarCompat;
 import com.ljn.callingsimulation.util.DateUtil;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
 
@@ -62,6 +62,7 @@ public class CallingAdderActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         setContentView(R.layout.activity_add_phone);
 
+        StatusBarCompat.setStatusBarColor(this,0xEFEFF0, true);
         //初始化数据库
         initDB();
 
@@ -181,8 +182,8 @@ public class CallingAdderActivity extends AppCompatActivity {
                 values[8] = "1";
                 values[9] = del;
                 sqLiteOpenHelperUtil.doInsert(values);
-                finish();
                 CallingAdderActivity.this.startActivity(new Intent(CallingAdderActivity.this, MainActivity.class));
+                finish();
             }
         });
     }
@@ -209,7 +210,7 @@ public class CallingAdderActivity extends AppCompatActivity {
         WindowManager m = getWindowManager();
         Display d = m.getDefaultDisplay();
         final Dialog dialog1 = new Dialog(this);
-        dialog1.setContentView(R.layout.dialog);
+        dialog1.setContentView(R.layout.cancel_dialog);
         Window window = dialog1.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
         window.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM);
@@ -228,8 +229,8 @@ public class CallingAdderActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 CallingAdderActivity.this.startActivity(new Intent(CallingAdderActivity.this, MainActivity.class));
+                finish();
             }
         });
 
@@ -410,7 +411,7 @@ public class CallingAdderActivity extends AppCompatActivity {
             if (day >= nowDay) {
                 c = day - nowDay;
             } else {
-                c = 7 + nowDay - day;
+                c = 7 + day - nowDay;
             }
         }
         String strNowDay = DateUtil.dateToString(new Date(), "yyyy-MM-dd");

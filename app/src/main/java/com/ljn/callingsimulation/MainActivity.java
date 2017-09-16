@@ -2,6 +2,7 @@ package com.ljn.callingsimulation;
 
 import android.content.*;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.*;
+import com.githang.statusbar.StatusBarCompat;
 import com.ljn.callingsimulation.bean.Calling;
 import com.ljn.callingsimulation.util.DateUtil;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static Vector<Calling> callings = null;
     public static VoiceUtil mVoiceUtil;
     private TextView noContentText;
+    private Boolean EXIT = false;
 
 
     @Override
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         mVoiceUtil = new VoiceUtil(MainActivity.this);
         checkPermission();
         setContentView(R.layout.activity_main);
+
         startService(new Intent(this,MainService.class));
         initDB();
         initComponent();
@@ -75,13 +79,15 @@ public class MainActivity extends AppCompatActivity {
         addCallingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 MainActivity.this.startActivity(new Intent(MainActivity.this,CallingAdderActivity.class));
+                finish();
             }
         });
         settingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                finish();
             }
         });
         myAdapter = new MyAdapter(this);
@@ -234,5 +240,27 @@ public class MainActivity extends AppCompatActivity {
 
 //            context.startActivity(new Intent(context,CallActivity.class).putExtra("name",name));
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!EXIT) {
+            Toast.makeText(getApplicationContext(), "再次点击退出模拟来电",
+                    Toast.LENGTH_SHORT).show();
+            EXIT = true;
+        }else{
+            finish();
+        }
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                EXIT = false;
+            }
+        }.start();
     }
 }

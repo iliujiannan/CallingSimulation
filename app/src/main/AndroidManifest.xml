@@ -37,6 +37,7 @@
         </service>
         <activity android:name=".CallActivity"/>
         <activity android:name=".CalledActivity"/>
+        <activity android:name=".SettingActivity"/>
     </application>
 
 </manifest>

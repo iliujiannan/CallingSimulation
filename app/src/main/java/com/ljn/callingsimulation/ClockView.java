@@ -116,7 +116,6 @@ public class ClockView extends View{
             //恢复画布
             canvas.restore();
         }
-
         //画外围四分圈
         //画圆弧对象，参数1234分别代表，起始x值，起始y值，终点x值，终点y值
         RectF oval = new RectF(5, 5, getWidth() - 5, getHeight() - 5);
@@ -130,17 +129,14 @@ public class ClockView extends View{
         canvas.drawText("3", getWidth() / 2 + radius + 33 - 32, getHeight() / 2 + 4, numPaint);
         canvas.drawText("6", getWidth() / 2 - 4, getHeight() / 2 + radius + 43 - 32, numPaint);
         canvas.drawText("9", getWidth() / 2 - radius - 43 + 31, getHeight() / 2 + 3, numPaint);
-
         //画圆心
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, 10, centurePaint);
-
         //画时针
         int hour = calendar.get(Calendar.HOUR);//当前小时数
         canvas.save();
         canvas.rotate(hour * 30, getWidth() / 2, getHeight() / 2);
         canvas.drawLine(getWidth() / 2, getHeight() / 2 - 10, getWidth() / 2, getHeight() / 2 - radius + 80 + 40, hourPaint);
         canvas.restore();
-
         //画分针
         int minute = calendar.get(Calendar.MINUTE);
         canvas.save();
@@ -169,8 +165,6 @@ public class ClockView extends View{
             canvas.restore();
         }
         canvas.restore();
-
-
         postInvalidateDelayed(100);//每0.1秒更新一次
     }
 }
