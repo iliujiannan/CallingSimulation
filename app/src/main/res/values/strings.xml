@@ -6,4 +6,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="about_ljn">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内蒙古大学计算机学院软件工程专业软件工程一班2015级本科生，内蒙古大学精英学生开发者联盟（IMUDGES）正式成员,IMUDGES后端组网&amp;络安全组成员。</string>
+    <string name="about_zym">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;内蒙古大学计算机学院软件工程专业软件工程一班2015级本科生，负责整个项目的UI设计以及项目规划。</string>
 </resources>

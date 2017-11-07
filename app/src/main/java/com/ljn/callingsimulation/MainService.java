@@ -1,9 +1,13 @@
 package com.ljn.callingsimulation;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import com.ljn.callingsimulation.bean.Calling;
 import com.ljn.callingsimulation.util.DateUtil;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
@@ -24,6 +28,9 @@ public class MainService extends Service {
 
     @Override
     public void onCreate() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setContentTitle("模拟来电在正后台运行");
+        startForeground(1,builder.build());
         dbHelper = new SQLiteOpenHelperUtil(MainService.this);
         System.out.println("ttt");
         new Thread(){
