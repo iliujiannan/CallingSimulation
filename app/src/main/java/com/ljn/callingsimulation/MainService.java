@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.view.KeyEvent;
+
 import com.ljn.callingsimulation.bean.Calling;
 import com.ljn.callingsimulation.util.DateUtil;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
@@ -81,4 +83,5 @@ public class MainService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);
     }
+
 }

@@ -1,8 +1,11 @@
 package com.ljn.callingsimulation;
 
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -12,8 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.*;
-import com.githang.statusbar.StatusBarCompat;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.ljn.callingsimulation.bean.Calling;
 import com.ljn.callingsimulation.util.DateUtil;
 import com.ljn.callingsimulation.util.SQLiteOpenHelperUtil;
@@ -52,10 +60,23 @@ public class MainActivity extends AppCompatActivity {
         startService(new Intent(this,MainService.class));
         initDB();
         initComponent();
+
+        /**
+         * bgq
+         */
+        isDestroy = false;
+        // 获得AudioManager对象
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);//音乐音量,如果要监听铃声音量变化，则改为AudioManager.STREAM_RING
+        maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
+        onVolumeChangeListener();
+        /**
+         * bgq
+         */
     }
 
     @Override
     protected void onDestroy() {
+        isDestroy = true;
         super.onDestroy();
     }
 
@@ -263,4 +284,105 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
     }
+
+    /**
+     * 当前音量
+     */
+    private int currentVolume;
+    /**
+     * 控制音量的对象
+     */
+    public AudioManager mAudioManager;
+    /**
+     * 系统最大音量
+     */
+    private int maxVolume;
+    /**
+     * 确保关闭程序后，停止线程
+     */
+    private boolean isDestroy;
+
+    /**
+     * 监听音量按键的线程
+     */
+    private Thread volumeChangeThread;
+    private int count = 0;
+    private SQLiteOpenHelperUtil sqLiteOpenHelperUtil;
+
+    /**
+     * 持续监听音量变化 说明： 当前音量改变时，将音量值重置为最大值减2
+     */
+    public void onVolumeChangeListener() {
+        sqLiteOpenHelperUtil = new SQLiteOpenHelperUtil(MainActivity.this);
+        currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
+        final int[] i = {1};
+        volumeChangeThread = new Thread() {
+            public void run() {
+                while (true) {
+                    boolean isDerease = false;
+                    // 监听的时间间隔
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        System.out.println("error in onVolumeChangeListener Thread.sleep(20) " + e.getMessage());
+                    }
+
+                    if (currentVolume < mAudioManager.getStreamVolume(AudioManager.STREAM_RING)) {
+                        count++;
+                        currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
+                        // 设置音量等于 maxVolume-2的原因是：当音量值是最大值和最小值时，按音量加或减没有改变，所以每次都设置为固定的值。
+                    }
+                    if (currentVolume > mAudioManager.getStreamVolume(AudioManager.STREAM_RING)) {
+                        count--;
+                        currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
+                    }
+
+                    if (count >= 1 || count <= -1) {
+                        Date now = new Date();
+                        String time = DateUtil.dateToString(new Date(now.getTime() + (i[0]++)*60 * 1000));
+                        System.out.println("按下了音量+");
+                        count = 0;
+                        String[] values = new String[10];
+                        values[0] = "";
+                        values[1] = "老王大哥";
+                        values[2] = "自定义对话";
+                        values[3] = "赶紧回来吃饭\n快点\n再见";
+                        values[4] = time;
+                        values[5] = "男声";
+                        values[6] = "1";
+                        values[7] = "1";
+                        values[8] = "1";
+                        values[9] = "1";
+                        sqLiteOpenHelperUtil.doInsert(values);
+                        try {
+                            Thread.sleep(1000*60*5);
+                        } catch (InterruptedException e) {
+                            System.out.println("error in onVolumeChangeListener Thread.sleep(20) " + e.getMessage());
+                        }
+                    }
+                }
+            }
+        };
+        volumeChangeThread.start();
+    }
+
+    private String calculate(int mi) {
+        //通过repeat hour minute 计算响铃的yyyy-MM-dd HH：mm：ss
+        Integer day = DateUtil.getIndOfDay("每天");
+        Integer nowDay = DateUtil.getIndOfDay(DateUtil.getWeekOfDate(new Date()));
+        Integer c = 0;
+        if (day != -1 && nowDay != -1) {
+            if (day >= nowDay) {
+                c = day - nowDay;
+            } else {
+                c = 7 + day - nowDay;
+            }
+        }
+        String strNowDay = DateUtil.dateToString(new Date(), "yyyy-MM-dd");
+        Date nowDate = DateUtil.stringToDate(strNowDay + " 00:00:00");
+        Date targetDate = new Date(nowDate.getTime() + c * 24 * 60 * 60 * 1000 + mi * 60 * 1000);
+        String targetStringDate = DateUtil.dateToString(targetDate);
+        return targetStringDate;
+    }
+
 }
